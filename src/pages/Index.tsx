@@ -181,7 +181,7 @@ const Index = () => {
               variant="outline"
               size="lg"
               className="gap-2"
-              onClick={() => window.location.href = "mailto:coderyigit@outlook.com"}
+              onClick={() => window.location.href = "mailto:yigitismailselcuk@gmail.com"}
             >
               <Mail className="h-5 w-5" />
               Email
