@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>coderyigit6's profile</title>
+</head>
+<body>
+    <h1>coderyigit6</h1>
+    <div id="profile"></div>
+
+    <h2>My Repos</h2>
+    <div id="repos"></div>
+
+    <script>
+        const USERNAME = "coderyigit6";
+
+        async function fetchProfile() {
+            const res = await fetch(`https://api.github.com/users/${USERNAME}`);
+            const data = await res.json();
+
+            document.getElementById("profile").innerHTML = `
+                <p>${data.bio || "No bio available"}</p>
+                <p>
+                    <a href="${data.html_url}" target="_blank">GitHub Profile</a>
+                    ${data.blog ? ` | <a href="${data.blog}" target="_blank">Website</a>` : ""}
+                </p>
+                <p>Public Repos: ${data.public_repos}</p>
+            `;
+        }
+
+        async function fetchRepos() {
+            const res = await fetch(`https://api.github.com/users/${USERNAME}/repos?sort=updated&per_page=50`);
+            const repos = await res.json();
+
+            const container = document.getElementById("repos");
+
+            if (repos.length === 0) {
+                container.innerHTML = "<p>No repositories found.</p>";
+                return;
+            }
+
+            repos.forEach(repo => {
+                const card = document.createElement("div");
+                card.innerHTML = `
+                    <hr>
+                    <h3><a href="${repo.html_url}" target="_blank">${repo.name}</a></h3>
+                    <p>${repo.description || "No description"}</p>
+                    <p>
+                        ${repo.language ? `Language: ${repo.language} | ` : ""}
+                        Stars: ${repo.stargazers_count} | Forks: ${repo.forks_count}
+                    </p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        fetchProfile();
+        fetchRepos();
+    </script>
+</body>
+</html>
